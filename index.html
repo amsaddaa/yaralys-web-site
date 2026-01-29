@@ -68,6 +68,7 @@
       --glass-border: rgba(255, 255, 255, 0.16);
       --shadow: 0 30px 70px rgba(4, 7, 20, 0.55);
       --radius: 28px;
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     * { box-sizing: border-box; }
@@ -649,6 +650,37 @@
       display: block;
     }
 
+    /* Scroll reveal animations */
+    [data-reveal] {
+      opacity: 1;
+      transform: none;
+    }
+
+    .enable-reveal [data-reveal] {
+      opacity: 0;
+      transform: translate3d(var(--reveal-shift, 0), 22px, 0);
+      transition: opacity 1400ms var(--ease-out), transform 1400ms var(--ease-out);
+      transition-delay: var(--reveal-delay, 0ms);
+      will-change: transform, opacity;
+    }
+
+    .enable-reveal [data-reveal="left"] { --reveal-shift: -60px; }
+    .enable-reveal [data-reveal="right"] { --reveal-shift: 60px; }
+
+    .enable-reveal [data-reveal].is-visible {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      [data-reveal] {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+        transition-delay: 0ms !important;
+      }
+    }
+
     @media (min-width: 1024px) {
       .hero {
         grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
@@ -708,13 +740,17 @@
       html { scroll-behavior: smooth; }
     }
   </style>
+  <script>
+    // Enable reveal animations only when JS is available, to prevent flash of visible content.
+    document.documentElement.classList.add("enable-reveal");
+  </script>
 </head>
 <body>
   <div class="page">
     <div class="stars"></div>
 
     <header>
-      <div class="wrap nav">
+      <div class="wrap nav" data-reveal data-reveal-delay="120">
         <a class="brand" href="#">
           <img src="logo-dark-bg.svg" alt="Logo Yaralys" />
           <span>Yaralys</span>
@@ -744,8 +780,8 @@
     </header>
 
     <main>
-      <section class="wrap hero">
-        <div class="hero-text">
+      <section class="wrap hero" data-reveal data-reveal-delay="220">
+        <div class="hero-text" data-reveal="left" data-reveal-delay="420">
           <h1>Des moments calmes, pensés pour grandir en famille.</h1>
           <p>
             Yaralys crée des applications douces et fiables pour accompagner les parents au quotidien.
@@ -785,14 +821,14 @@
             </span>
           </div>
         </div>
-        <div class="hero-visual">
+        <div class="hero-visual" data-reveal="right" data-reveal-delay="620">
           <img src="hero.webp" alt="Illustration héro nuit étoilée Yaralys" />
         </div>
       </section>
 
       <section id="promesses" class="wrap section">
         <div class="engagements">
-          <div>
+          <div data-reveal="left">
             <h2 class="section-title">Nos engagements pour les familles</h2>
             <p class="section-lead">
               La promesse Yaralys est simple : une expérience calme, cohérente et fiable, qui laisse de la place aux parents
@@ -843,16 +879,16 @@
               </article>
             </div>
           </div>
-          <div class="engagements-visual" aria-hidden="true"></div>
+          <div class="engagements-visual" aria-hidden="true" data-reveal="right"></div>
         </div>
       </section>
 
       <section id="tales" class="wrap section">
         <div class="app-section">
-          <div class="app-visual">
+          <div class="app-visual" data-reveal="left">
             <img src="tales.webp" alt="Illustration Yaralys Tales" loading="lazy" />
           </div>
-          <div class="app-content">
+          <div class="app-content" data-reveal="right">
             <h2 class="section-title">Yaralys Tales</h2>
             <p class="section-lead"><strong>Des histoires du soir personnalisées, pour finir la journée en douceur.</strong></p>
             <p class="section-lead">
@@ -903,7 +939,7 @@
 
       <section id="learn" class="wrap section">
         <div class="app-section reverse">
-          <div class="app-content">
+          <div class="app-content" data-reveal="left">
             <h2 class="section-title">Yaralys Learn</h2>
             <p class="section-lead"><strong>Apprendre à son rythme, dans un cadre calme et rassurant.</strong></p>
             <p class="section-lead">
@@ -953,7 +989,7 @@
               </article>
             </div>
           </div>
-          <div class="app-visual">
+          <div class="app-visual" data-reveal="right">
             <img src="learn.webp" alt="Illustration Yaralys Learn" loading="lazy" />
           </div>
         </div>
@@ -961,10 +997,10 @@
 
       <section id="growth" class="wrap section">
         <div class="app-section">
-          <div class="app-visual">
+          <div class="app-visual" data-reveal="left">
             <img src="growth.webp" alt="Illustration Yaralys Growth" loading="lazy" />
           </div>
-          <div class="app-content">
+          <div class="app-content" data-reveal="right">
             <h2 class="section-title">Yaralys Growth</h2>
             <p class="section-lead"><strong>Observer le développement, sans comparer ni s’inquiéter.</strong></p>
             <p class="section-lead">
@@ -1058,7 +1094,7 @@
 
       <section id="coming-soon" class="wrap section">
         <div class="contact">
-          <div>
+          <div data-reveal="left">
             <span class="tagline">
               <svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M12 3l2.4 5 5.6.5-4.2 3.6 1.3 5.4L12 15.9 7 17.5l1.3-5.4L4 8.5l5.6-.5L12 3z"></path>
@@ -1071,7 +1107,7 @@
               Nous prenons le temps nécessaire pour proposer une expérience réellement adaptée aux familles.
             </p>
           </div>
-          <div class="email-ui">
+          <div class="email-ui" data-reveal="right">
             <div>
               <h3>Être informé du lancement</h3>
               <p class="section-lead">Laissez-nous votre contact et nous vous tiendrons au courant des prochaines étapes.</p>
@@ -1136,6 +1172,45 @@
       window.addEventListener("scroll", toggleBackToTop, { passive: true });
       backToTop.addEventListener("click", () => {
         window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+    }
+
+    const revealItems = document.querySelectorAll("[data-reveal]");
+    if (revealItems.length) {
+      const setDelay = (el, delayMs) => el.style.setProperty("--reveal-delay", `${delayMs}ms`);
+
+      const revealNow = (el) => {
+        // Force a layout pass, then reveal in the next frame so the initial hidden state is painted
+        el.getBoundingClientRect();
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => el.classList.add("is-visible"));
+        });
+      };
+
+      const revealObserver = new IntersectionObserver(
+        (entries, observer) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              revealNow(entry.target);
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.2, rootMargin: "0px 0px -10% 0px" }
+      );
+
+      revealItems.forEach((item, index) => {
+        const customDelay = item.dataset.revealDelay ? Number(item.dataset.revealDelay) : null;
+        const delay = Number.isFinite(customDelay) ? customDelay : (index < 6 ? 160 + index * 140 : 0);
+        setDelay(item, delay);
+
+        const rect = item.getBoundingClientRect();
+        const isInView = rect.top < window.innerHeight * 0.92 && rect.bottom > 0;
+        if (isInView) {
+          setTimeout(() => revealNow(item), 40);
+        } else {
+          revealObserver.observe(item);
+        }
       });
     }
   </script>
